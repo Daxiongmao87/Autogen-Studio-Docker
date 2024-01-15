@@ -28,4 +28,4 @@ jobs:
         context: .
         file: ./samples/dockers/Dockerfile.base
         push: true
-        tags: your-dockerhub-username/autogen_img:latest
+        tags: daxiongmao87/autogen_studio:latest
