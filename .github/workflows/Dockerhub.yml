@@ -20,4 +20,4 @@ jobs:
       run: docker build -f samples/dockers/Dockerfile.base -t daxiongmao87/autogen_studio https://github.com/microsoft/autogen.git#main
 
     - name: Push Docker Image to Docker Hub
-      run: docker push your-dockerhub-username/autogen_studio:latest
+      run: docker push daxiongmao87/autogen_studio:latest
