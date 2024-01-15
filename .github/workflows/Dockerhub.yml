@@ -23,7 +23,7 @@ jobs:
           echo 'ENV AUTOGEN_PORT=8080' >> Dockerfile
           echo 'ENV AUTOGEN_HOST=127.0.0.1' >> Dockerfile
           echo 'ENV AUTOGEN_WORKERS=1' >> Dockerfile
-          echo 'ENV AUTOGEN_DOCS=false' >> Dockerfile
+          echo 'ENV AUTOGEN_DOCS=False' >> Dockerfile
           echo 'CMD ["/bin/sh", "-c", "autogenui --host $AUTOGEN_HOST --port $AUTOGEN_PORT --workers $AUTOGEN_WORKERS --docs $AUTOGEN_DOCS"]' >> Dockerfile
 
       - name: Set up Docker Buildx
