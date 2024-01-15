@@ -20,7 +20,7 @@ jobs:
           echo 'RUN git clone https://github.com/victordibia/autogen-ui.git .' >> Dockerfile
           echo 'RUN pip install -e .' >> Dockerfile
           echo 'EXPOSE 8080' >> Dockerfile
-          echo 'EXPORT PATH=$HOME/.local/bin:$PATH' >> Dockerfile
+          echo 'ENV PATH=$HOME/.local/bin:$PATH' >> Dockerfile
           echo 'CMD ["autogenui"]' >> Dockerfile
 
       - name: Set up Docker Buildx
