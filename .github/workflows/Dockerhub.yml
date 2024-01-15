@@ -21,7 +21,7 @@ jobs:
           echo 'RUN pip install autogenui .' >> Dockerfile
           echo 'ENV PATH=$HOME/.local/bin:$PATH' >> Dockerfile
           echo 'ENV AUTOGEN_PORT='8080'' >> Dockerfile
-          echo 'CMD ["autogenui", "--port", "$AUTOGEN_PORT"]' >> Dockerfile
+          echo 'CMD ["sh", "-c" "autogenui --port $AUTOGEN_PORT"]' >> Dockerfile
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
