@@ -19,7 +19,6 @@ jobs:
           echo 'WORKDIR /app' >> Dockerfile
           echo 'RUN git clone https://github.com/victordibia/autogen-ui.git .' >> Dockerfile
           echo 'RUN pip install autogenui .' >> Dockerfile
-          echo 'EXPOSE 8080' >> Dockerfile
           echo 'ENV PATH=$HOME/.local/bin:$PATH' >> Dockerfile
           echo 'ENV AUTOGEN_PORT='8080'' >> Dockerfile
           echo 'CMD ["autogenui", "--port", "$AUTOGEN_PORT"]' >> Dockerfile
