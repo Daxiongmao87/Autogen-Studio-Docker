@@ -1,6 +1,35 @@
 name: Build and Push Docker Image
 
 on:
+  release:
+    types: [published]
+    repos:
+      - microsoft/autogen
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Login to Docker Hub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKER_HUB_USERNAME }}
+        password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+    - name: Build Docker Image
+      run: docker build -f samples/dockers/Dockerfile.base -t daxiongmao87/autogen_img:${{ github.event.release.tag_name }} https://github.com/microsoft/autogen.git#${{ github.event.release.tag_name }}
+
+    - name: Tag Image as Latest
+      run: docker tag daxiongmao87/autogen_img:${{ github.event.release.tag_name }} daxiongmao87/autogen_img:latest
+
+    - name: Push Docker Image to Docker Hub (Release Tag)
+      run: docker push daxiongmao87/autogen_img:${{ github.event.release.tag_name }}
+
+    - name: Push Docker Image to Docker Hub (Latest Tag)
+      run: docker push daxiongmao87/autogen_img:latest
+name: Build and Push Docker Image
+
+on:
   push:
     branches: [ main ]
   release:
