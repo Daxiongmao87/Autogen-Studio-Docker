@@ -14,7 +14,7 @@ jobs:
 
       - name: Create Dockerfile
         run: |
-          echo 'FROM python:3.9-slim' > Dockerfile
+          echo 'FROM ubuntu:22.04' > Dockerfile
           echo 'apt install -y git' > Dockerfile
           echo 'WORKDIR /app' >> Dockerfile
           echo 'git clone https://github.com/victordibia/autogen-ui.git .' >> Dockerfile
