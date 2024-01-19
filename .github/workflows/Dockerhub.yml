@@ -64,7 +64,7 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            ${{ secrets.DOCKER_HUB_USERNAME }}/autogen_studio_from_source:latest
-            ${{ secrets.DOCKER_HUB_USERNAME }}/autogen_studio_from_source:${{ github.event.release.tag_name != '' && github.event.release.tag_name || 'latest' }}
+            ${{ secrets.DOCKER_HUB_USERNAME }}/autogen_studio_ui:latest
+            ${{ secrets.DOCKER_HUB_USERNAME }}/autogen_studio_ui:${{ github.event.release.tag_name != '' && github.event.release.tag_name || 'latest' }}
       
       
