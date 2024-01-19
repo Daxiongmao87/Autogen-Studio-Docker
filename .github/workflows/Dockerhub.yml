@@ -57,6 +57,7 @@ jobs:
           echo 'ENV AUTOGEN_HOST=127.0.0.1' >> Dockerfile
           echo 'ENV AUTOGEN_WORKERS=1' >> Dockerfile
           echo 'RUN mkdir -p /tmp/data/db /tmp/data/user' >> Dockerfile
+          echo 'RUN mkdir -p /autogen/samples/apps/autogen-studio/autogenstudio/web/files/user' >> Dockerfile
           echo 'RUN ln -s /data/database.sqlite /autogen/samples/apps/autogen-studio/autogenstudio/web/database.sqlite' >> Dockerfile
           echo 'RUN ln -s /data/user /autogen/samples/apps/autogen-studio/autogenstudio/web/files/user' >> Dockerfile
           echo 'CMD ["/bin/sh", "-c", "autogenstudio ui --host $AUTOGEN_HOST --port $AUTOGEN_PORT --workers $AUTOGEN_WORKERS"]' >> Dockerfile
