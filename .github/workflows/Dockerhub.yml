@@ -57,11 +57,9 @@ jobs:
           echo 'ENV AUTOGEN_HOST=127.0.0.1' >> Dockerfile
           echo 'ENV AUTOGEN_WORKERS=1' >> Dockerfile
           echo 'RUN mkdir -p /tmp/data/db /tmp/data/user' >> Dockerfile
-          echo 'RUN ln -s /data/database.sqlite /usr/local/lib/python3.10/site-packages/autogenstudio/web/database.sqlite' >> Dockerfile
-          echo 'RUN ln -s /data/user usr/local/lib/python3.10/site-packages/autogenstudio/web/files/user' >> Dockerfile
-          echo 'RUN echo "mv /tmp/data /data" > /entrypoint.sh' >> Dockerfile
-          echo 'RUN echo "/bin/sh -c autogenstudio ui --host \$AUTOGEN_HOST --port \$AUTOGEN_PORT --workers \$AUTOGEN_WORKERS" >> /entrypoint.sh' >> Dockerfile
-          echo 'CMD ["/bin/sh", "/entrypoint.sh"]' >> Dockerfile
+          echo 'RUN ln -s /data/database.sqlite /autogen/samples/apps/autogen-studio/autogenstudio/web/database.sqlite' >> Dockerfile
+          echo 'RUN ln -s /data/user /autogen/samples/apps/autogen-studio/autogenstudio/web/files/user' >> Dockerfile
+          echo 'CMD ["/bin/sh", "-c", "autogenstudio ui --host $AUTOGEN_HOST --port $AUTOGEN_PORT --workers $AUTOGEN_WORKERS"]' >> Dockerfile
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
