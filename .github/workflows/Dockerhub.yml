@@ -49,13 +49,14 @@ jobs:
       - name: Create Dockerfile
         run: |
           echo 'FROM python:3.10' > Dockerfile
-          echo 'ENV AUTOGENUI_PORT=8080' >> Dockerfile
-          echo 'ENV AUTOGENUI_HOST=127.0.0.1' >> Dockerfile
           echo 'COPY . /autogen' >> Dockerfile
           echo 'WORKDIR /autogen/samples/apps/autogen-studio' >> Dockerfile
           echo 'RUN pip install -e .' >> Dockerfile
           echo 'COPY ./samples/apps/autogen-studio/frontend/public /autogen/samples/apps/autogen-studio/frontend/public' >> Dockerfile
-          echo 'CMD ["/bin/sh", "-c", "python manage.py runserver $AUTOGENUI_HOST:$AUTOGENUI_PORT"]' >> Dockerfile
+          echo 'ENV AUTOGEN_PORT=8080' >> Dockerfile
+          echo 'ENV AUTOGEN_HOST=127.0.0.1' >> Dockerfile
+          echo 'ENV AUTOGEN_WORKERS=1' >> Dockerfile
+          echo 'CMD ["/bin/sh", "-c", "autogenstudio ui --host $AUTOGEN_HOST --port $AUTOGEN_PORT --workers $AUTOGEN_WORKERS"]' >> Dockerfile
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
