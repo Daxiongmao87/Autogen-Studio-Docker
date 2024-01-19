@@ -15,8 +15,8 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: 'microsoft/autogen'
-          ref: 'refs/tags/${{ github.event.release.tag_name }}'
-
+          ref: ${{ github.ref }}
+          
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
