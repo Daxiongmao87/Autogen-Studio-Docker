@@ -5,6 +5,7 @@ on:
     types: [published]
     repos:
       - microsoft/autogen
+  workflow_dispatch:
 
 jobs:
   build-and-push-from-source:
