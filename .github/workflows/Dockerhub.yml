@@ -45,7 +45,7 @@ jobs:
           echo 'COPY . /autogen' >> Dockerfile
           echo 'WORKDIR /autogen/samples/apps/autogen-studio' >> Dockerfile
           echo 'RUN pip install -e .' >> Dockerfile
-          echo 'COPY --from=build /autogen/samples/apps/autogen-studio/frontend/public /autogen/samples/apps/autogen-studio/frontend/public' >> Dockerfile
+          echo 'COPY ./samples/apps/autogen-studio/frontend/public /autogen/samples/apps/autogen-studio/frontend/public' >> Dockerfile
           echo 'CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]' >> Dockerfile
 
       - name: Set up Docker Buildx
