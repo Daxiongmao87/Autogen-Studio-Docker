@@ -1,26 +1,50 @@
-name: Build and Push Docker Image
+name: Build and Push Docker Image from Autogen Source
 
 on:
-  push:
-    branches:
-      - main
+  release:
+    types: [published]
+    repos:
+      - microsoft/autogen
 
 jobs:
-  build-and-push:
+  build-and-push-from-source:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout Autogen Studio code
         uses: actions/checkout@v2
+        with:
+          repository: 'microsoft/autogen'
+          ref: 'refs/tags/${{ github.event.release.tag_name }}'
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.10'
+
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install Python dependencies
+        run: pip install -e .
+
+      - name: Install and Build Frontend
+        run: |
+          npm install -g gatsby-cli
+          npm install --global yarn
+          cd samples/apps/autogen-studio/frontend
+          yarn install
+          yarn build
 
       - name: Create Dockerfile
         run: |
-          echo 'FROM python:3.10-slim' > Dockerfile
-          echo 'RUN pip install autogenstudio ' >> Dockerfile
-          echo 'ENV PATH=$HOME/.local/bin:$PATH' >> Dockerfile
-          echo 'ENV AUTOGEN_PORT=8080' >> Dockerfile
-          echo 'ENV AUTOGEN_HOST=127.0.0.1' >> Dockerfile
-          echo 'ENV AUTOGEN_WORKERS=1' >> Dockerfile
-          echo 'CMD ["/bin/sh", "-c", "autogenstudio ui --host $AUTOGEN_HOST --port $AUTOGEN_PORT --workers $AUTOGEN_WORKERS"]' >> Dockerfile
+          echo 'FROM python:3.10' > Dockerfile
+          echo 'COPY . /autogen' >> Dockerfile
+          echo 'WORKDIR /autogen/samples/apps/autogen-studio' >> Dockerfile
+          echo 'RUN pip install -e .' >> Dockerfile
+          echo 'COPY --from=build /autogen/samples/apps/autogen-studio/frontend/public /autogen/samples/apps/autogen-studio/frontend/public' >> Dockerfile
+          echo 'CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]' >> Dockerfile
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
@@ -37,4 +61,4 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/autogen_studio_ui:latest
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/autogen_studio_from_source:${{ github.event.release.tag_name }}
