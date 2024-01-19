@@ -57,7 +57,6 @@ jobs:
           echo 'ENV AUTOGEN_HOST=127.0.0.1' >> Dockerfile
           echo 'ENV AUTOGEN_WORKERS=1' >> Dockerfile
           echo 'RUN mkdir -p /tmp/data/db /tmp/data/user' >> Dockerfile
-          echo 'RUN mv /usr/local/lib/python3.10/site-packages/autogenstudio/web/files/user /tmp/data/user' >> Dockerfile
           echo 'RUN ln -s /data/database.sqlite /usr/local/lib/python3.10/site-packages/autogenstudio/web/database.sqlite' >> Dockerfile
           echo 'RUN ln -s /data/user usr/local/lib/python3.10/site-packages/autogenstudio/web/files/user' >> Dockerfile
           echo 'RUN echo "mv /tmp/data /data" > /entrypoint.sh' >> Dockerfile
