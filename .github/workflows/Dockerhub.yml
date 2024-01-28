@@ -18,7 +18,7 @@ jobs:
       - name: Install Docker CLI
         run: |
           sudo apt-get update
-          sudo apt-get install -y docker-ce-cli tree
+          sudo apt-get install -y docker-ce-cli
 
       - name: Login to DockerHub
         uses: docker/login-action@v1
@@ -32,17 +32,17 @@ jobs:
           for tag in $(git tag); do
             if ! docker manifest inspect ${{ secrets.DOCKER_HUB_USERNAME }}/autogen_studio_ui:$tag > /dev/null; then
               echo "Building and pushing tag $tag"
-
-              # Checkout specific tag
               git checkout $tag
 
-              # Create Dockerfile
+              # Create Dockerfile with frontend build process
               echo 'FROM python:3.10' > Dockerfile
               echo 'COPY . /autogen' >> Dockerfile
-              echo 'WORKDIR /autogen/samples/apps/autogen-studio' >> Dockerfile
+              echo 'WORKDIR /autogen' >> Dockerfile
               echo 'RUN pip install -e .' >> Dockerfile
-              tree .
-              echo 'COPY samples/apps/autogen-studio/frontend/public /autogen/samples/apps/autogen-studio/frontend/public' >> Dockerfile
+              echo 'RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - && apt-get install -y nodejs && npm install -g yarn gatsby-cli' >> Dockerfile
+              echo 'WORKDIR /autogen/samples/apps/autogen-studio/frontend' >> Dockerfile
+              echo 'RUN yarn install && yarn build' >> Dockerfile
+              echo 'WORKDIR /autogen/samples/apps/autogen-studio' >> Dockerfile
               echo 'ENV AUTOGEN_PORT=8080' >> Dockerfile
               echo 'ENV AUTOGEN_HOST=127.0.0.1' >> Dockerfile
               echo 'ENV AUTOGEN_WORKERS=1' >> Dockerfile
@@ -60,4 +60,3 @@ jobs:
               echo "Tag $tag already exists on Docker Hub, skipping..."
             fi
           done
-
