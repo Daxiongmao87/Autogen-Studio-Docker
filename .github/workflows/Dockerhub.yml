@@ -36,7 +36,22 @@ jobs:
               # Checkout specific tag
               git checkout $tag
 
-              # Replace the following commands with your Docker build instructions
+              # Create Dockerfile
+              echo 'FROM python:3.10' > Dockerfile
+              echo 'COPY . /autogen' >> Dockerfile
+              echo 'WORKDIR /autogen/samples/apps/autogen-studio' >> Dockerfile
+              echo 'RUN pip install -e .' >> Dockerfile
+              echo 'COPY ./samples/apps/autogen-studio/frontend/public /autogen/samples/apps/autogen-studio/frontend/public' >> Dockerfile
+              echo 'ENV AUTOGEN_PORT=8080' >> Dockerfile
+              echo 'ENV AUTOGEN_HOST=127.0.0.1' >> Dockerfile
+              echo 'ENV AUTOGEN_WORKERS=1' >> Dockerfile
+              echo 'RUN mkdir -p /tmp/data/db /tmp/data/user' >> Dockerfile
+              echo 'RUN mkdir -p /autogen/samples/apps/autogen-studio/autogenstudio/web/files/user' >> Dockerfile
+              echo 'RUN ln -s /data/database.sqlite /autogen/samples/apps/autogen-studio/autogenstudio/web/database.sqlite' >> Dockerfile
+              echo 'RUN ln -s /data/user /autogen/samples/apps/autogen-studio/autogenstudio/web/files/user' >> Dockerfile
+              echo 'CMD ["/bin/sh", "-c", "autogenstudio ui --host $AUTOGEN_HOST --port $AUTOGEN_PORT --workers $AUTOGEN_WORKERS"]' >> Dockerfile
+
+              # Run Docker build and push commands
               docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/autogen_studio_ui:$tag .
               docker push ${{ secrets.DOCKER_HUB_USERNAME }}/autogen_studio_ui:$tag
 
@@ -44,3 +59,4 @@ jobs:
               echo "Tag $tag already exists on Docker Hub, skipping..."
             fi
           done
+
