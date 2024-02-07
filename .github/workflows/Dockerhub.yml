@@ -26,6 +26,13 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
+      - name: Fetch Release Tags
+        id: get-release-tags
+        run: |
+          RELEASE_TAGS=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          "https://api.github.com/repos/microsoft/autogen/releases" | jq -r '.[].tag_name')
+          echo "::set-output name=tags::$RELEASE_TAGS"
+
       - name: Compare tags and build missing
         run: |
           LATEST_TAG=$(echo ${{ steps.get-release-tags.outputs.tags }} | tr ' ' '\n' | sort -V | tail -n1)
