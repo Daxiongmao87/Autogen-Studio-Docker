@@ -57,7 +57,6 @@ jobs:
               echo 'ENV AUTOGEN_WORKERS=1' >> Dockerfile
               echo 'RUN mkdir -p /tmp/data/user' >> Dockerfile
               echo 'RUN mkdir -p /autogen/samples/apps/autogen-studio/autogenstudio/web/files/user' >> Dockerfile
-              echo 'RUN mv /data/user /tmp/data/user' >> Dockerfile
               echo 'RUN ln -s /data/database.sqlite /autogen/samples/apps/autogen-studio/autogenstudio/web/database.sqlite' >> Dockerfile
               echo 'RUN ln -s /data/user /autogen/samples/apps/autogen-studio/autogenstudio/web/files/user' >> Dockerfile
               echo 'CMD ["/bin/sh", "-c", "gatsby serve --host $AUTOGEN_HOST --port $AUTOGEN_PORT"]' >> Dockerfile
