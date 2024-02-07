@@ -59,6 +59,7 @@ jobs:
               echo 'RUN mkdir -p /autogen/samples/apps/autogen-studio/autogenstudio/web/files/user' >> Dockerfile
               echo 'RUN ln -s /data/database.sqlite /autogen/samples/apps/autogen-studio/autogenstudio/web/database.sqlite' >> Dockerfile
               echo 'RUN ln -s /data/user /autogen/samples/apps/autogen-studio/autogenstudio/web/files/user' >> Dockerfile
+              echo 'WORKDIR /autogen/samples/apps/autogen-studio/frontend' >> Dockerfile
               echo 'CMD ["/bin/sh", "-c", "gatsby serve --host $AUTOGEN_HOST --port $AUTOGEN_PORT"]' >> Dockerfile
 
               # Run Docker build and push commands
