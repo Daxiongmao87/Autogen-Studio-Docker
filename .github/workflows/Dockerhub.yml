@@ -35,6 +35,7 @@ jobs:
 
       - name: Compare tags and build missing
         run: |
+          git fetch --tags
           LATEST_TAG=$(echo ${{ steps.get-release-tags.outputs.tags }} | tr ' ' '\n' | sort -V | tail -n1)
           echo "Most recent version tag identified as: $LATEST_TAG"
           for tag in ${{ steps.get-release-tags.outputs.tags }}; do
