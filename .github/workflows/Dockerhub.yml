@@ -40,7 +40,7 @@ jobs:
               echo 'COPY . /autogen' >> Dockerfile
               echo 'WORKDIR /autogen' >> Dockerfile
               echo 'RUN pip install -e .' >> Dockerfile
-              echo 'RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - && apt-get install -y nodejs && npm install -g yarn gatsby-cli' >> Dockerfile
+              echo 'RUN curl -sL https://deb.nodesource.com/setup_18.x | bash - && apt-get install -y nodejs && npm install -g yarn gatsby-cli' >> Dockerfile
               echo 'WORKDIR /autogen/samples/apps/autogen-studio/frontend' >> Dockerfile
               echo 'RUN yarn install && yarn build' >> Dockerfile
               echo 'WORKDIR /autogen/samples/apps/autogen-studio' >> Dockerfile
