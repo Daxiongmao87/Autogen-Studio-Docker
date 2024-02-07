@@ -63,11 +63,12 @@ jobs:
           done
 
           git fetch --tags
+          LATEST_TAG=$(git tag | sort -V | tail -n1)
+          echo "Most recent version tag identified as: $LATEST_TAG"
           for tag in $(git tag); do
             if ! docker manifest inspect ${{ secrets.DOCKER_HUB_USERNAME }}/autogen_studio_ui:$tag > /dev/null; then
               echo "Building and pushing tag $tag"
               git checkout $tag
-
               # Create Dockerfile with frontend build process
               echo 'FROM python:3.10' > Dockerfile
               echo 'COPY . /autogen' >> Dockerfile
@@ -89,7 +90,11 @@ jobs:
               # Run Docker build and push commands
               docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/autogen_studio_ui:$tag .
               docker push ${{ secrets.DOCKER_HUB_USERNAME }}/autogen_studio_ui:$tag
-
+              if [ "$tag" = "$LATEST_TAG" ]; then
+                echo "Tagging $tag as 'latest' and pushing"
+                docker tag ${{ secrets.DOCKER_HUB_USERNAME }}/autogen_studio_ui:$tag ${{ secrets.DOCKER_HUB_USERNAME }}/autogen_studio_ui:latest
+                docker push ${{ secrets.DOCKER_HUB_USERNAME }}/autogen_studio_ui:latest
+              fi
             else
               echo "Tag $tag already exists on Docker Hub, skipping..."
             fi
