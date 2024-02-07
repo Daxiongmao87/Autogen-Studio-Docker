@@ -62,7 +62,7 @@ jobs:
               echo 'RUN ln -s /data/user /autogen/samples/apps/autogen-studio/autogenstudio/web/files/user' >> Dockerfile
               echo 'WORKDIR /autogen/samples/apps/autogen-studio/frontend' >> Dockerfile
               echo 'RUN echo "#!/bin/sh" > /autogen/samples/apps/autogen-studio/frontend/entrypoint.sh' >> Dockerfile
-              echo 'RUN echo "# Check if the volume is empty" >> Dockerfile
+              echo 'RUN echo "# Check if the volume is empty"' >> Dockerfile
               echo 'RUN echo "Checking if the database exists..."' >> Dockerfile
               echo 'RUN echo "if [ ! -f /data/database.sqlite ]; then"' >> Dockerfile
               echo 'RUN echo "  echo "Database not found, copying from /tmp/data/db/database.sqlite..."' >> Dockerfile
