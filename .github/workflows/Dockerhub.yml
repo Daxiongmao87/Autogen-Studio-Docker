@@ -56,9 +56,25 @@ jobs:
               echo 'ENV AUTOGEN_WORKERS=1' >> Dockerfile
               echo 'RUN mkdir -p /tmp/data/db /tmp/data/user' >> Dockerfile
               echo 'RUN mkdir -p /autogen/samples/apps/autogen-studio/autogenstudio/web/files/user' >> Dockerfile
+              echo 'RUN mv /data/database.sqlite /tmp/data/db/database.sqlite' >> Dockerfile
+              echo 'RUN mv /data/user /tmp/data/user' >> Dockerfile
               echo 'RUN ln -s /data/database.sqlite /autogen/samples/apps/autogen-studio/autogenstudio/web/database.sqlite' >> Dockerfile
               echo 'RUN ln -s /data/user /autogen/samples/apps/autogen-studio/autogenstudio/web/files/user' >> Dockerfile
               echo 'WORKDIR /autogen/samples/apps/autogen-studio/frontend' >> Dockerfile
+              echo 'RUN echo "#!/bin/sh" > /autogen/samples/apps/autogen-studio/frontend/entrypoint.sh' >> Dockerfile
+              echo 'RUN echo "# Check if the volume is empty" >> Dockerfile
+              echo 'RUN echo "Checking if the database exists..."' >> Dockerfile
+              echo 'RUN echo "if [ ! -f /data/database.sqlite ]; then"' >> Dockerfile
+              echo 'RUN echo "  echo "Database not found, copying from /tmp/data/db/database.sqlite..."' >> Dockerfile
+              echo 'RUN echo "  cp /tmp/data/db/database.sqlite /data/database.sqlite"' >> Dockerfile
+              echo 'RUN echo "fi"' >> Dockerfile
+              echo 'RUN echo "Checking if the user files exist..."' >> Dockerfile
+              echo 'RUN echo "if [ ! -d /data/user ]; then"' >> Dockerfile
+              echo 'RUN echo "  echo "User files not found, copying from /tmp/data/user..."' >> Dockerfile
+              echo 'RUN echo "  cp -r /tmp/data/user /data/user"' >> Dockerfile
+              echo 'RUN echo "fi"' >> Dockerfile
+              echo 'RUN echo "gatsby serve --host $AUTOGEN_HOST --port $AUTOGEN_PORT"' >> Dockerfile
+              echo 'RUN chmod +x /autogen/samples/apps/autogen-studio/frontend/entrypoint.sh' >> Dockerfile
               echo 'CMD ["/bin/sh", "-c", "gatsby serve --host $AUTOGEN_HOST --port $AUTOGEN_PORT"]' >> Dockerfile
 
               # Run Docker build and push commands
