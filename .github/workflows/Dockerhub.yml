@@ -44,7 +44,7 @@ jobs:
           LATEST_TAG=$(echo "$TAGS" | sort -V | tail -n1)
           echo "Most recent version tag identified as: $LATEST_TAG"
           for tag in $TAGS; do
-            if ! docker manifest inspect ${{ secrets.DOCKER_HUB_USERNAME }}/autogen_studio_ui:$tag > /dev/null; then
+            if ! docker manifest inspect ${{ secrets.DOCKER_HUB_USERNAME }}/autogen-studio-ui:$tag > /dev/null; then
               echo "Building and pushing tag $tag"
               # Create Dockerfile with pip install process
               echo 'FROM python:3.10' > Dockerfile
@@ -54,12 +54,12 @@ jobs:
               echo 'ENV AUTOGEN_WORKERS=1' >> Dockerfile
               echo 'CMD ["/bin/bash", "-c", "autogenstudio ui --port $AUTOGEN_PORT --host $AUTOGEN_HOST --workers $AUTOGEN_WORKERS"]' >> Dockerfile
               # Run Docker build and push commands
-              docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/autogen_studio_ui:$tag .
-              docker push ${{ secrets.DOCKER_HUB_USERNAME }}/autogen_studio_ui:$tag
+              docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/autogen-studio-ui:$tag .
+              docker push ${{ secrets.DOCKER_HUB_USERNAME }}/autogen-studio-ui:$tag
               if [ "$tag" = "$LATEST_TAG" ]; then
                 echo "Tagging $tag as 'latest' and pushing"
-                docker tag ${{ secrets.DOCKER_HUB_USERNAME }}/autogen_studio_ui:$tag ${{ secrets.DOCKER_HUB_USERNAME }}/autogen_studio_ui:latest
-                docker push ${{ secrets.DOCKER_HUB_USERNAME }}/autogen_studio_ui:latest
+                docker tag ${{ secrets.DOCKER_HUB_USERNAME }}/autogen-studio-ui:$tag ${{ secrets.DOCKER_HUB_USERNAME }}/autogen-studio-ui:latest
+                docker push ${{ secrets.DOCKER_HUB_USERNAME }}/autogen-studio-ui:latest
               fi
             else
               echo "Tag $tag already exists on Docker Hub, skipping..."
